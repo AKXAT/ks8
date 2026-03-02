@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  users-service:
+    build:
+      context: ./data_base
+    container_name: users-service
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data_base/users.json:/app/users.json
+    networks:
+      - flask-network
+
+  dashboard-service:
+    build:
+      context: ./flask_app
+    container_name: dashboard-service
+    ports:
+      - "5001:5001"
+    depends_on:
+      - users-service
+    networks:
+      - flask-network
+
+networks:
+  flask-network:
+    driver: bridge
