@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Users</h2>
+    <ul id="users"></ul>
+
+    <h3>Add User</h3>
+    <input id="name" placeholder="Name">
+    <input id="email" placeholder="Email">
+    <button onclick="addUser()">Add</button>
+
+    <script>
+        async function loadUsers() {
+            const res = await fetch('/dashboard');
+            const data = await res.json();
+
+            const list = document.getElementById('users');
+            list.innerHTML = '';
+
+            data.users.forEach(user => {
+                const li = document.createElement('li');
+                li.innerText = user.name + " - " + user.email;
+                list.appendChild(li);
+            });
+        }
+
+        async function addUser() {
+            await fetch('/update_dashboard', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value
+                })
+            });
+
+            loadUsers();
+        }
+
+        loadUsers();
+    </script>
+</body>
+</html>

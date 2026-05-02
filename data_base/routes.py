@@ -5,7 +5,7 @@ from json import JSONDecodeError
 
 user_bp = Blueprint('user', __name__)
 
-USERS_FILE = 'users.json'
+USERS_FILE = '/app/data/users.json'
 
 
 def load_users():
